@@ -1,0 +1,29 @@
+blueprint:
+  author: Andreas Lindhé
+  name: Max brightness
+  description: Triggers maximum brightness for all selected lights once all lights are turned on.
+  domain: automation
+  input:
+    lights:
+      selector:
+        entity:
+          multiple: true
+          filter:
+            - domain: light
+triggers:
+  - trigger: state
+    entity_id: !input lights
+    from: "off"
+    to: "on"
+conditions:
+  - condition: state
+    entity_id: !input lights
+    state: "on"
+actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 100
+    target:
+      entity_id: !input lights
+mode: single
